@@ -1,50 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
-import 'package:strange/Strange/login.dart';
-import 'package:strange/Strange/signup.dart';
-import 'package:strange/Strange/penalty.dart';
-import 'package:strange/Strange/profile.dart';
-import 'package:strange/Strange/griddashboard.dart'; 
-import 'package:strange/Strange/status.dart';
-import 'package:strange/strange/listViewParcel.dart';
-import 'package:strange/strange/insertPenalty.dart';
-import 'package:strange/strange/InsertParcel.dart';
 
+void main() => runApp(
+  MaterialApp(
+  debugShowCheckedModeBanner:false,
+  home:HomePage(),
+  )
+ 
+);
 
-void main() => runApp(MaterialApp(home: Home(),));
-
-class Home extends StatefulWidget {
+class HomePage extends StatefulWidget{
   @override
-  _HomeState createState() => _HomeState();
-  
+  _HomePageState createState() =>_HomePageState();
 }
 
-class _HomeState extends State<Home> {
-  bool _showLogin = true;
-  @override
-Widget build(BuildContext context) {
-  if (_showLogin) {
-     return Login1Page();
-   } else {
-    return SignUp1();
-  }
-}
-   void toggleView() {
-    setState(() {
-      _showLogin = !_showLogin;
-    });
-  }
-}
-
-
-
-class Homeful extends StatefulWidget {
-  @override
-  HomeState createState() => new HomeState();
-}
-
-class HomeState extends State<Homeful> {
-  
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context){
     return Scaffold(
@@ -52,11 +21,7 @@ class HomeState extends State<Homeful> {
       appBar:AppBar(
         backgroundColor:Colors.white,
         elevation:3,
-        leading:ElevatedButton(
-              onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=> Profile()));
-                },
-       child:Container(
+       leading:Container(
            decoration:BoxDecoration( 
             borderRadius: BorderRadius.circular(40) ,
              color:Colors.black, 
@@ -71,7 +36,6 @@ class HomeState extends State<Homeful> {
             
          
           ),
-      ),
       ),
       body:SafeArea(
         child:Column(
@@ -123,18 +87,23 @@ class HomeState extends State<Homeful> {
                       children:<Widget>[
                            Text('Features',style:TextStyle(fontSize:15,fontWeight:FontWeight.bold),),
                            SizedBox(height:15,),
+                           /*Container(
+                            height: 200,
+                            child:ListView(
+                              scrollDirection:Axis.horizontal,
+                              children:<Widget>[
+                                promoCard('assets/download.jpeg','Parcel Status'),
+                                promoCard('assets/susu.jpeg','Penalty Fines'),
+                                 promoCard('assets/susu.jpeg','Penalty Fines'),
+                                  promoCard('assets/susu.jpeg','Penalty Fines'),
+                              ],
+                            ),
+                           ),*/
                            SizedBox(
                             height:20,
                             
                            ),
-                           
-                           
                             Align(alignment: Alignment.center,
-
-                          child: ElevatedButton(
-                            onPressed: () {
-                             Navigator.push(context, MaterialPageRoute(builder: (context)=> FormPage()));
-                          },
 
                            child:Container(
                             height:150,
@@ -145,9 +114,8 @@ class HomeState extends State<Homeful> {
                                fit:BoxFit.contain,
                                 image:AssetImage('assets/parcel.png')
                               ),
-                              
                               color:Colors.white
-                              
+
                             ),
                             child:const Align(
                               alignment: Alignment.bottomCenter,
@@ -157,19 +125,12 @@ class HomeState extends State<Homeful> {
                               )
                             )
                            ),
-                            ),
-                            ),
 
-                          
+                            ),
                             SizedBox(
                             height:20,
                            ),
                            Align(alignment: Alignment.center,
-
-                           child: ElevatedButton(
-                            onPressed: () {
-                             Navigator.push(context, MaterialPageRoute(builder: (context)=> FormPage2()));
-                          },
 
                             child:Container(
                             height:150,
@@ -191,7 +152,7 @@ class HomeState extends State<Homeful> {
                               )
                             )
                            )
-                           )
+                           
                            )
                           
 
@@ -205,6 +166,45 @@ class HomeState extends State<Homeful> {
 
     );
   }
+
+  Widget promoCard(image,text){
+    return AspectRatio(
+      aspectRatio: 2.62/3,
+      child:Container(
+        margin:EdgeInsets.only(right:15.0),
+        decoration:BoxDecoration(
+          color:Colors.orange,
+          borderRadius:BorderRadius.circular(20),
+          image:DecorationImage( 
+            fit:BoxFit.cover,
+            image:AssetImage(image)
+          ),
+          
+        
+        ),
+        child:Container(
+          
+          decoration:BoxDecoration(
+            borderRadius:BorderRadius.circular(20),
+            gradient: LinearGradient(
+          begin:Alignment.bottomRight,
+          stops:[0.1,0.9],
+          colors:[
+            Colors.black.withOpacity(.8),
+            Colors.black.withOpacity(.1)
+          ]
+         )
+         
+
+          ),
+          
+         
+        ),
+       
+      ),
+    );
+
+    
+  }
+  
 }
-
-

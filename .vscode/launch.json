@@ -1,0 +1,16 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Dart & Flutter",
+        "request": "launch",
+        "type": "dart",
+        "program": "lib/main.dart",
+        "args": [],
+        "flutterMode": "debug",
+        "cwd": "C:/Users/amir/Desktop/SEM 6/Mobile App Programming/Strange/strange"
+      }
+    ]
+  }
+  
+  

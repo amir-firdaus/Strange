@@ -1,4 +1,4 @@
-name: uxuiloginflutter
+name: strange
 description: A new Flutter application.
 
 # The following defines the version and build number for your application.
@@ -14,15 +14,27 @@ description: A new Flutter application.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.19.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
+  #flutter_vector_icons: ^1.0.0
+
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
+  firebase_core: ^2.13.1
+  flutter_dotenv: ^5.0.2
+  firebase_auth: ^4.6.0
+  cloud_firestore: ^4.7.0
+  provider: ^6.0.5
+  firebase_database: ^10.2.2
+  firebase_core_platform_interface: ^4.8.0
+  flutter_icons: ^1.1.0
+  get_it: ^7.6.0
+  http: ^0.13.0
 
 dev_dependencies:
   flutter_test:
@@ -42,9 +54,16 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - images/ux_ui_01/
-    - images/ux_ui_02/
-    - images/ux_ui_03/
+    - images/strange/
+    - assets/calender.png
+    - assets/location.png
+    - assets/profile.png
+    - assets/delivery.png
+    - assets/money.png
+    - assets/download.jpeg
+    - assets/parcel.png
+    - assets/susu.jpeg
+   
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

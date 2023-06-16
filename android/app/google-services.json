@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "112952900756",
+    "firebase_url": "https://utm-parcel-point-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "utm-parcel-point",
+    "storage_bucket": "utm-parcel-point.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:112952900756:android:be74a439607fc48c910881",
+        "android_client_info": {
+          "package_name": "com.tamerahmad.uxuiloginflutter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYKwgmcIttZPqWmwJwKyyofm9M0f1x5c4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
