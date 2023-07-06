@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:strange/Strange/griddashboard.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:strange/Strange/login.dart'; 
+import 'package:strange/Strange/login.dart';
+import 'package:strange/functions/auth.dart'; 
 import 'package:strange/home.dart';
 import 'package:strange/Strange/penalty.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -12,10 +13,10 @@ import 'package:strange/firebase_options.dart';
 
 class Profile extends StatefulWidget {
   @override
-  State<Profile> createState() => _Profil();
+  State<Profile> createState() => _Profile();
 }
 
-class _Profil extends State<Profile> {
+class _Profile extends State<Profile> {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final CollectionReference _userCollection =
       FirebaseFirestore.instance.collection('Users');
@@ -31,8 +32,8 @@ class _Profil extends State<Profile> {
 
   Future<void> fetchUserProfile() async {
     try {
-      User? user = FirebaseAuth.instance.currentUser;
-      String? userId = user?.uid;
+      //User? user = FirebaseAuth.instance.currentUser;
+      String? userId = currentUser?.uid;
 
       QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance
           .collection('users')
@@ -63,8 +64,15 @@ class _Profil extends State<Profile> {
           centerTitle: true,
           title: Text("Profile"),          
         ),
-        body: Column(
-          children: <Widget>[
+        body: StreamBuilder(
+          stream: _userCollection.snapshots(), //build connection
+          builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot){
+          if (streamSnapshot.hasData) {
+            return ListView.builder(
+              itemBuilder: (context, index) {
+                final DocumentSnapshot documentSnapshot =
+                    streamSnapshot.data!.docs[index];
+          <Widget>[
             CircleAvatar(
               radius: 80,
               backgroundImage: AssetImage("images/strange/trent.jpg"),
@@ -72,8 +80,8 @@ class _Profil extends State<Profile> {
 
             
             ListTile(
-              title: Center(child: Text("", style: TextStyle(fontSize: 30),),) ,
-              subtitle: Center(child: Text("", style: TextStyle(fontSize: 15)),),
+              title: Center(child: Text(documentSnapshot['name'], style: TextStyle(fontSize: 30),),) ,
+              subtitle: Center(child: Text(documentSnapshot['Matric'], style: TextStyle(fontSize: 15)),),
             ),
 
             Row(
@@ -96,26 +104,28 @@ class _Profil extends State<Profile> {
             ),
 
               ListTile(
-                title: Text("Email", style: TextStyle(fontSize: 20)),
-                subtitle: Text(email, style: TextStyle(fontSize: 15)),
-              ),
-
-              ListTile(
-                title: Text("Phone Number", style: TextStyle(fontSize: 20)),
-                subtitle: Text("", style: TextStyle(fontSize: 15)),
+                title: Text("email", style: TextStyle(fontSize: 20)),
+                subtitle: Text(documentSnapshot['email'], style: TextStyle(fontSize: 15)),
               ),
 
               ListTile(
                 title: Text("College", style: TextStyle(fontSize: 20)),
-                subtitle: Text("", style: TextStyle(fontSize: 15)),
+                subtitle: Text(documentSnapshot['College'], style: TextStyle(fontSize: 15)),
               ),
 
-          ],
-        )
-        
+          ];
+              }
+              
+        );
+          }
+           return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
         
          ),
 
+    )
     );
   }
 }

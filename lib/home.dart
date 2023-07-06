@@ -6,6 +6,7 @@ import 'package:strange/Strange/penalty.dart';
 import 'package:strange/Strange/profile.dart';
 import 'package:strange/Strange/griddashboard.dart'; 
 import 'package:strange/Strange/status.dart';
+import 'package:strange/strange/PenaltyParcel.dart';
 import 'package:strange/strange/listViewParcel.dart';
 import 'package:strange/strange/insertPenalty.dart';
 import 'package:strange/strange/InsertParcel.dart';
@@ -74,6 +75,7 @@ class HomeState extends State<Homeful> {
       ),
       ),
       body:SafeArea(
+        child: SingleChildScrollView(
         child:Column(
           crossAxisAlignment:CrossAxisAlignment.start,
           children:<Widget>[
@@ -153,14 +155,47 @@ class HomeState extends State<Homeful> {
                               alignment: Alignment.bottomCenter,
                               child:Padding(
                                 padding:const EdgeInsets.all(15.0),
-                                child:Text('Parcel Status',style:TextStyle(color:Colors.black,fontSize:20),),
+                                child:Text('Add Parcel',style:TextStyle(color:Colors.black,fontSize:20),),
                               )
                             )
                            ),
                             ),
                             ),
 
-                          
+                            
+
+                            SizedBox(height: 20,),
+                            Align(alignment: Alignment.center,
+
+                          child: ElevatedButton(
+                            onPressed: () {
+                             Navigator.push(context, MaterialPageRoute(builder: (context)=> HomePage()));
+                          },
+
+                           child:Container(
+                            height:150,
+                            width:265,
+                            decoration:BoxDecoration(
+                              borderRadius:BorderRadius.circular(20),
+                              image:DecorationImage( 
+                               fit:BoxFit.contain,
+                                image:AssetImage('assets/parcel.png')
+                              ),
+                              
+                              color:Colors.white
+                              
+                            ),
+                            child:const Align(
+                              alignment: Alignment.bottomCenter,
+                              child:Padding(
+                                padding:const EdgeInsets.all(15.0),
+                                child:Text('View Parcel',style:TextStyle(color:Colors.black,fontSize:20),),
+                              )
+                            )
+                           ),
+                            ),
+                            ),
+
                             SizedBox(
                             height:20,
                            ),
@@ -187,7 +222,42 @@ class HomeState extends State<Homeful> {
                               alignment: Alignment.bottomCenter,
                               child:Padding(
                                 padding:const EdgeInsets.all(15.0),
-                                child:Text('Penalty Fines',style:TextStyle(color:Colors.black,fontSize:20),),
+                                child:Text('Add Penalty Fines',style:TextStyle(color:Colors.black,fontSize:20),),
+                              )
+                            )
+                           )
+                           )
+                           ),
+
+
+                          
+                            SizedBox(
+                            height:20,
+                           ),
+                           Align(alignment: Alignment.center,
+
+                           child: ElevatedButton(
+                            onPressed: () {
+                             Navigator.push(context, MaterialPageRoute(builder: (context)=> Penalty2()));
+                          },
+
+                            child:Container(
+                            height:150,
+                            width:265,
+                            decoration:BoxDecoration(
+                              borderRadius:BorderRadius.circular(20),
+                              image:DecorationImage( 
+                               fit:BoxFit.contain,
+                               image:AssetImage('assets/money.png')
+                               ),
+                              color:Colors.white
+                               
+                            ),
+                            child:const Align(
+                              alignment: Alignment.bottomCenter,
+                              child:Padding(
+                                padding:const EdgeInsets.all(15.0),
+                                child:Text('View Penalty Fines',style:TextStyle(color:Colors.black,fontSize:20),),
                               )
                             )
                            )
@@ -202,7 +272,7 @@ class HomeState extends State<Homeful> {
           ],
         ),
       ),
-
+      )
     );
   }
 }

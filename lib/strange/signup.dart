@@ -1,13 +1,22 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:strange/Strange/login.dart';
 import 'package:strange/home.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:strange/functions/auth.dart';
 
-class SignUp1 extends StatelessWidget {
+class SignUp1 extends StatefulWidget {
+  // final Function? toggleView;
+  //  SignUp1({this.toggleView});
+//  final VoidCallback Login1Page;
+ const SignUp1({Key? key, }) : super(key: key);
 
+  @override
+  State<SignUp1> createState() => _SignUpPage();
+}
 
-  // final List<String> courses = ['Computer Science',    'Electrical Engineering',    'Mechanical Engineering',    'Civil Engineering',    'Business Administration',];
-  // final List<String> years = ['1st Year', '2nd Year', '3rd Year', '4th Year'];
+class _SignUpPage extends State<SignUp1>{
+
   final TextEditingController _controllerEmail = TextEditingController();
   final TextEditingController _controllerPassword = TextEditingController();
   final TextEditingController _controllerName = TextEditingController();
@@ -17,6 +26,24 @@ class SignUp1 extends StatelessWidget {
   final CollectionReference _usersCollection =
       FirebaseFirestore.instance.collection('Users');
 
+@override
+void dispose(){
+  _controllerEmail.dispose();
+  _controllerPassword.dispose();
+  _controllerName.dispose();
+  _controllerPhoneNo.dispose();
+  _controllerMatric.dispose();
+  _controllerCollege.dispose();
+  super.dispose();
+}
+
+Future signUp() async{
+  await FirebaseAuth.instance.createUserWithEmailAndPassword(
+    email: _controllerEmail.text, 
+    password: _controllerPassword.text,
+    );
+
+}
 
   @override
   Widget build(BuildContext context) {
@@ -248,7 +275,7 @@ class SignUp1 extends StatelessWidget {
                           SizedBox(height: 30,),
                           ElevatedButton(
                             onPressed: () async {
-                              //Navigator.push(context, MaterialPageRoute(builder: (context)=> Login1Page()));
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=> Login1Page()));
                               final String email = _controllerEmail.text;
                               final String password = _controllerPassword.text;
                               final String name = _controllerName.text;

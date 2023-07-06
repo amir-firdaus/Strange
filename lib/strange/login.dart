@@ -5,7 +5,9 @@ import 'package:strange/strange/signup.dart';
 import '../functions/auth.dart';
 
 class Login1Page extends StatefulWidget{
-  const Login1Page({Key? key}) : super(key: key);
+  const Login1Page({
+    Key? key,
+    }) : super(key: key);
   @override
   State<Login1Page> createState() => _Login1PageState();
 }
@@ -15,6 +17,13 @@ class _Login1PageState extends State<Login1Page> {
   final TextEditingController _controllerPassword = TextEditingController();
   final auth = Auth();
   bool isLogin = true;
+
+  @override
+  void dispose(){
+    _controllerEmail.dispose();
+    _controllerPassword.dispose();
+    super.dispose();
+  }
   
   @override
   Widget build(BuildContext context) {

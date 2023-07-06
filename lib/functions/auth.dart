@@ -1,6 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:strange/Strange/signup.dart';
+import 'package:strange/strange/login.dart';
+import 'package:strange/strange/signup.dart';
+import 'package:strange/functions/user.dart';
 
 class Auth {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -10,6 +14,7 @@ class Auth {
   User? get currentUser => _firebaseAuth.currentUser;
 
   Stream<User?> get authStateChanges => _firebaseAuth.authStateChanges();
+
 
   Future<void> signInWithEmailAndPassword({
     required String email,
@@ -21,7 +26,7 @@ class Auth {
     );
   }
 
-  Future<void> createUserWithEmailAndPassword({
+  Future createUserWithEmailAndPassword({
     required String email,
     required String password,
   }) async {
@@ -29,6 +34,11 @@ class Auth {
       email: email,
       password: password,
     );
+    await _userCollection.doc(currentUser!.uid).set({
+      'id': currentUser!.uid,
+      'email': email,
+      'password': password
+    });
   }
 
   Future<void> signOut() async {
@@ -37,9 +47,14 @@ class Auth {
 
   Future<String?> readUser() async {
     final DocumentSnapshot user =
-        await _userCollection.doc('nfTHs8Lr329TXmWZOgxD').get();
+        await _userCollection.doc(currentUser!.uid).get();
         return user.data().toString();
   }
+
+  FirebaseUser? _firebaseUser(User? user) {
+    return user != null ? FirebaseUser(uid: user.uid) : null;
+  }
+
 
 
   authState() {
@@ -53,4 +68,5 @@ class Auth {
   test() {
     debugPrint('test');
   }
+
 }
