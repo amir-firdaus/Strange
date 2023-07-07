@@ -9,19 +9,19 @@ void main() async {
   await Firebase.initializeApp(); // Initialize Firebase
   runApp(const MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: Penalty2(),
+    home: viewPenalty(),
     
   ));
 }
 
-class Penalty2 extends StatefulWidget {
-  const Penalty2({Key? key}) : super(key: key);
+class viewPenalty extends StatefulWidget {
+  const viewPenalty({Key? key}) : super(key: key);
 
   @override
-  _Penalty2State createState() => _Penalty2State();
+  _ViewPenaltyState createState() => _ViewPenaltyState();
 }
 
-class _Penalty2State extends State<Penalty2> {
+class _ViewPenaltyState extends State<viewPenalty> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _trackController = TextEditingController();
   final TextEditingController _fineController = TextEditingController();

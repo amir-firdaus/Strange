@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:strange/Strange/login.dart';
 import 'package:strange/Strange/signup.dart';
 import 'package:strange/Strange/penalty.dart';
@@ -12,15 +14,15 @@ import 'package:strange/strange/insertPenalty.dart';
 import 'package:strange/strange/InsertParcel.dart';
 
 
-void main() => runApp(MaterialApp(home: Home(),));
+void main() => runApp(MaterialApp(home: Log(),));
 
-class Home extends StatefulWidget {
+class Log extends StatefulWidget {
   @override
-  _HomeState createState() => _HomeState();
+  _LogState createState() => _LogState();
   
 }
 
-class _HomeState extends State<Home> {
+class _LogState extends State<Log> {
   bool _showLogin = true;
   @override
 Widget build(BuildContext context) {
@@ -37,14 +39,40 @@ Widget build(BuildContext context) {
   }
 }
 
-
-
-class Homeful extends StatefulWidget {
+class Home extends StatefulWidget {
   @override
   HomeState createState() => new HomeState();
 }
 
-class HomeState extends State<Homeful> {
+class HomeState extends State<Home> {
+  String role = '';
+
+  final user = FirebaseAuth.instance.currentUser;
+  final _userCollection = FirebaseFirestore.instance.collection('Users');
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUserProfile();
+  }
+
+  Future<void> fetchUserProfile() async {
+    try {
+      final userId = user!.uid;
+
+      DocumentSnapshot<Map<String, dynamic>> snapshot =
+          await _userCollection.doc(userId).get();
+
+      if (snapshot.exists) {
+        final data = snapshot.data();
+      setState(() {
+        role = data?['role'] ?? '';
+        });
+      }
+    } catch (e) {
+      print('Error fetching user profile: $e');
+    }
+  }
   
   @override
   Widget build(BuildContext context){
@@ -62,7 +90,7 @@ class HomeState extends State<Homeful> {
             borderRadius: BorderRadius.circular(40) ,
              color:Colors.black, 
               image:DecorationImage(
-           image:AssetImage('assets/download.jpeg'),
+           image:AssetImage('images/strange/avatar.png'),
           ),
              
               
@@ -130,12 +158,14 @@ class HomeState extends State<Homeful> {
                             
                            ),
                            
-                           
+                           Visibility(
+                               visible: role == 'Admin',
+                               child:
                             Align(alignment: Alignment.center,
 
                           child: ElevatedButton(
                             onPressed: () {
-                             Navigator.push(context, MaterialPageRoute(builder: (context)=> FormPage()));
+                             Navigator.push(context, MaterialPageRoute(builder: (context)=> AddParcel()));
                           },
 
                            child:Container(
@@ -161,6 +191,7 @@ class HomeState extends State<Homeful> {
                            ),
                             ),
                             ),
+                           ),
 
                             
 
@@ -169,7 +200,7 @@ class HomeState extends State<Homeful> {
 
                           child: ElevatedButton(
                             onPressed: () {
-                             Navigator.push(context, MaterialPageRoute(builder: (context)=> HomePage()));
+                             Navigator.push(context, MaterialPageRoute(builder: (context)=> viewParcel()));
                           },
 
                            child:Container(
@@ -199,11 +230,14 @@ class HomeState extends State<Homeful> {
                             SizedBox(
                             height:20,
                            ),
+                           Visibility(
+                               visible: role == 'Admin',
+                               child:
                            Align(alignment: Alignment.center,
 
                            child: ElevatedButton(
                             onPressed: () {
-                             Navigator.push(context, MaterialPageRoute(builder: (context)=> FormPage2()));
+                             Navigator.push(context, MaterialPageRoute(builder: (context)=> AddPenalty()));
                           },
 
                             child:Container(
@@ -227,6 +261,7 @@ class HomeState extends State<Homeful> {
                             )
                            )
                            )
+                           )
                            ),
 
 
@@ -238,7 +273,7 @@ class HomeState extends State<Homeful> {
 
                            child: ElevatedButton(
                             onPressed: () {
-                             Navigator.push(context, MaterialPageRoute(builder: (context)=> Penalty2()));
+                             Navigator.push(context, MaterialPageRoute(builder: (context)=> viewPenalty()));
                           },
 
                             child:Container(

@@ -1,28 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:strange/Strange/griddashboard.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:strange/Strange/login.dart';
-import 'package:strange/functions/auth.dart'; 
 import 'package:strange/home.dart';
-import 'package:strange/Strange/penalty.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:strange/firebase_options.dart';
 
 class Profile extends StatefulWidget {
   @override
-  State<Profile> createState() => _Profile();
+  State<Profile> createState() => _ProfileState();
 }
 
-class _Profile extends State<Profile> {
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  final CollectionReference _userCollection =
-      FirebaseFirestore.instance.collection('Users');
-  User? get currentUser => _firebaseAuth.currentUser;
+class _ProfileState extends State<Profile> {
   String email = '';
   String password = '';
+  String college = '';
+  String Matric = '';
+  String name = '';
+  String Phone ='';
+  String role = '';
+
+  final user = FirebaseAuth.instance.currentUser;
+  final _userCollection = FirebaseFirestore.instance.collection('Users');
 
   @override
   void initState() {
@@ -32,18 +29,20 @@ class _Profile extends State<Profile> {
 
   Future<void> fetchUserProfile() async {
     try {
-      //User? user = FirebaseAuth.instance.currentUser;
-      String? userId = currentUser?.uid;
+      final userId = user!.uid;
 
-      QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance
-          .collection('users')
-          .where('userId', isEqualTo: userId)
-          .limit(1)
-          .get();
+      DocumentSnapshot<Map<String, dynamic>> snapshot =
+          await _userCollection.doc(userId).get();
 
-      if (snapshot.docs.isNotEmpty) {
-        setState(() {
-          email = snapshot.docs.first.data()['email'];
+      if (snapshot.exists) {
+        final data = snapshot.data();
+      setState(() {
+        email = data?['email'] ?? '';
+        college = data?['College'] ?? '';
+        name = data?['name'] ?? '';
+        Matric = data?['Matric'] ?? '';
+        Phone = data?['Phone'] ?? '';
+        role = data?['role'] ?? '';
         });
       }
     } catch (e) {
@@ -59,37 +58,23 @@ class _Profile extends State<Profile> {
           color: Color(0xFF800000)
         )
         ),
-      home: Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text("Profile"),          
-        ),
-        body: StreamBuilder(
-          stream: _userCollection.snapshots(), //build connection
-          builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot){
-          if (streamSnapshot.hasData) {
-            return ListView.builder(
-              itemBuilder: (context, index) {
-                final DocumentSnapshot documentSnapshot =
-                    streamSnapshot.data!.docs[index];
-          <Widget>[
-            CircleAvatar(
-              radius: 80,
-              backgroundImage: AssetImage("images/strange/trent.jpg"),
+    home:Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text("Profile"),
+      ),
+      body: Column(
+        children: [
+          ListTile(
+              title: Center(child: Text(name, style: TextStyle(fontSize: 30),),) ,
+              subtitle: Center(child: Text(Matric, style: TextStyle(fontSize: 15)),),
             ),
-
-            
-            ListTile(
-              title: Center(child: Text(documentSnapshot['name'], style: TextStyle(fontSize: 30),),) ,
-              subtitle: Center(child: Text(documentSnapshot['Matric'], style: TextStyle(fontSize: 15)),),
-            ),
-
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 ElevatedButton(
                   onPressed: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=> Homeful()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=> Home()));
               },
               child: Text("Go Back"),
               ),
@@ -105,27 +90,26 @@ class _Profile extends State<Profile> {
 
               ListTile(
                 title: Text("email", style: TextStyle(fontSize: 20)),
-                subtitle: Text(documentSnapshot['email'], style: TextStyle(fontSize: 15)),
+                subtitle: Text(email, style: TextStyle(fontSize: 15)),
+              ),
+
+              ListTile(
+                title: Text("Phone Number", style: TextStyle(fontSize: 20)),
+                subtitle: Text(Phone, style: TextStyle(fontSize: 15)),
               ),
 
               ListTile(
                 title: Text("College", style: TextStyle(fontSize: 20)),
-                subtitle: Text(documentSnapshot['College'], style: TextStyle(fontSize: 15)),
+                subtitle: Text(college, style: TextStyle(fontSize: 15)),
               ),
 
-          ];
-              }
-              
-        );
-          }
-           return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-        
-         ),
-
-    )
-    );
+              ListTile(
+                title: Text("Role", style: TextStyle(fontSize: 20)),
+                subtitle: Text(role, style: TextStyle(fontSize: 15)),
+              ),
+        ]
+              ),
+            ),
+          ); 
   }
 }

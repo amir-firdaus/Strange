@@ -3,44 +3,57 @@ import 'package:flutter/material.dart';
 import 'package:strange/functions/parcel.dart';
 import 'package:strange/firebase_crud.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(); // Initialize Firebase
   runApp(const MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: HomePage(),
+    home: viewParcel(),
     
   ));
 }
 
-// class MyApp extends StatelessWidget {
-//   const MyApp({Key? key}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return const MaterialApp(
-//       debugShowCheckedModeBanner: false,
-//       home: HomePage(),
-//     );
-//   }
-// }
-
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+class viewParcel extends StatefulWidget {
+  const viewParcel({Key? key}) : super(key: key);
 
   @override
-  _HomePageState createState() => _HomePageState();
+  _ViewParcelState createState() => _ViewParcelState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _ViewParcelState extends State<viewParcel> {
 final CollectionReference _parcelCollection =
       FirebaseFirestore.instance.collection('Parcel');
+ String name = '';
+ String email = '';
+
+  final user = FirebaseAuth.instance.currentUser;
+  final _userCollection = FirebaseFirestore.instance.collection('Users');
 
   @override
   void initState() {
- //   _foundUsers = _allUsers;
     super.initState();
+    fetchUserProfile();
+  }
+
+  Future<void> fetchUserProfile() async {
+    try {
+      final userId = user!.uid;
+
+      DocumentSnapshot<Map<String, dynamic>> snapshot =
+          await _userCollection.doc(userId).get();
+
+      if (snapshot.exists) {
+        final data = snapshot.data();
+      setState(() {
+        name = data?['name'] ?? '';
+        email = data?['email'] ?? '';
+        });
+      }
+    } catch (e) {
+      print('Error fetching user profile: $e');
+    }
   }
 
    @override
@@ -61,13 +74,15 @@ final CollectionReference _parcelCollection =
                     streamSnapshot.data!.docs[index];
                 return Card(
                   margin: const EdgeInsets.all(5),
-                  child: ListTile(
+                    child: ListTile(
                     title: Text(documentSnapshot['trackingNumber']),
                     subtitle: Text(documentSnapshot['Location']),
                     trailing: SizedBox(
                       width: 100,
+                      child: Text(documentSnapshot['Penalty']),
                     ),
                   ),
+
                 );
               },
             );

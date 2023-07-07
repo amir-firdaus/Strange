@@ -9,19 +9,19 @@ void main() async {
   await Firebase.initializeApp(); // Initialize Firebase
   runApp(const MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: FormPage2(),
+    home: AddPenalty(),
     
   ));
 }
 
-class FormPage2 extends StatefulWidget {
-  const FormPage2({Key? key}) : super(key: key);
+class AddPenalty extends StatefulWidget {
+  const AddPenalty({Key? key}) : super(key: key);
 
   @override
-  _FormPageState2 createState() => _FormPageState2();
+  _AddPenaltyState createState() => _AddPenaltyState();
 }
 
-class _FormPageState2 extends State<FormPage2> {
+class _AddPenaltyState extends State<AddPenalty> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _trackController = TextEditingController();
   final TextEditingController _fineController = TextEditingController();

@@ -17,12 +17,15 @@ class SignUp1 extends StatefulWidget {
 
 class _SignUpPage extends State<SignUp1>{
 
+  List<String> role = ["Admin","Student"];
+
   final TextEditingController _controllerEmail = TextEditingController();
   final TextEditingController _controllerPassword = TextEditingController();
   final TextEditingController _controllerName = TextEditingController();
   final TextEditingController _controllerPhoneNo = TextEditingController();
   final TextEditingController _controllerMatric = TextEditingController();
   final TextEditingController _controllerCollege = TextEditingController();
+  final TextEditingController _controllerRole = TextEditingController();
   final CollectionReference _usersCollection =
       FirebaseFirestore.instance.collection('Users');
 
@@ -34,6 +37,7 @@ void dispose(){
   _controllerPhoneNo.dispose();
   _controllerMatric.dispose();
   _controllerCollege.dispose();
+  _controllerRole.dispose();
   super.dispose();
 }
 
@@ -257,9 +261,43 @@ Future signUp() async{
                                 ),
                               ),
                             ),
-                         
+                          ),
 
+                           SizedBox(
+                            height: 20,
+                          ),
+
+                         Container(
+                           width: 300,
+                            height: 60,
+                          child: TextField(
+                              autofocus: true,
+                              controller: _controllerRole,
+                              decoration: InputDecoration(
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Color.fromARGB(255, 81, 13, 13),
+                                    width: 3.0,
                                   ),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Color.fromARGB(255, 81, 13, 13),
+                                    width: 3.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                labelText: 'Role',
+                                suffix: Icon(
+                                  Icons.assignment_ind_outlined,
+                                  color: Color.fromARGB(255, 81, 13, 13),
+                                ),
+                              ),
+                            ),
+                          ),
+
+
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 15),
                             child: Row(
@@ -281,9 +319,11 @@ Future signUp() async{
                               final String name = _controllerName.text;
                               final String Matric = _controllerMatric.text;
                               final String College = _controllerCollege.text;
+                              final String Phone = _controllerPhoneNo.text;
+                              final String role = _controllerRole.text;
                               if (email != null) {
                               await _usersCollection
-                              .add({"email": email, "password": password, "name":name, "Matric": Matric, "College":College});
+                              .add({"email": email, "password": password, "name":name, "Matric": Matric, "College":College, "Phone":Phone, "role":role});
 
                       _controllerEmail.text = '';
                       _controllerPassword.text = '';

@@ -9,22 +9,23 @@ void main() async {
   await Firebase.initializeApp(); // Initialize Firebase
   runApp(const MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: FormPage(),
+    home: AddParcel(),
     
   ));
 }
 
-class FormPage extends StatefulWidget {
-  const FormPage({Key? key}) : super(key: key);
+class AddParcel extends StatefulWidget {
+  const AddParcel({Key? key}) : super(key: key);
 
   @override
-  _FormPageState createState() => _FormPageState();
+  _AddParcelState createState() => _AddParcelState();
 }
 
-class _FormPageState extends State<FormPage> {
+class _AddParcelState extends State<AddParcel> {
  // final _formKey = GlobalKey<FormState>();
   final TextEditingController _locController = TextEditingController();
   final TextEditingController _trackController = TextEditingController();
+
   
 final CollectionReference _parcelCollection =
       FirebaseFirestore.instance.collection('Parcel');
@@ -176,6 +177,7 @@ Future<void> _deleteParcel(String parcelId) async {
                       child: Row(
                         children: [
 // Press this button to edit a single product
+
                           IconButton(
                               icon: const Icon(Icons.edit),
                               onPressed: () =>
@@ -205,7 +207,7 @@ Future<void> _deleteParcel(String parcelId) async {
         child: const Icon(Icons.add),
 
       ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat
     );
   }
 }
